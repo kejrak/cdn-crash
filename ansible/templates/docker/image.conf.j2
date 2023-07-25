@@ -1,0 +1,46 @@
+FROM debian:bullseye
+
+ENV container docker
+
+ENV DEBIAN_FRONTEND noninteractive
+
+STOPSIGNAL SIGRTMIN+3
+
+WORKDIR /
+
+RUN apt-get update ; \
+    apt-get install -y systemd systemd-sysv; \
+    apt-get clean ; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
+    rm -rf /lib/systemd/system/multi-user.target.wants/* ; \
+    rm -rf /etc/systemd/system/*.wants/* ; \
+    rm -rf /lib/systemd/system/local-fs.target.wants/* ; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*udev* ; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*initctl* ; \
+    rm -rf /lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup* ; \
+    rm -rf /lib/systemd/system/systemd-update-utmp*
+
+RUN apt update && \
+  apt upgrade -y && \
+  apt-get install -y openssh-server python3
+
+RUN mkdir /var/run/sshd
+
+RUN useradd -m -d /home/{{ docker.username }} -s /bin/bash {{ docker.username }} && \
+  echo "{{ docker.username }}:admin" | chpasswd
+
+COPY {{ ssh.private_key_name }}.pub /tmp/{{ ssh.private_key_name }}.pub 
+
+RUN mkdir -p /home/{{ docker.username }}/.ssh && \
+  cat /tmp/{{ ssh.private_key_name }}.pub >> /home/{{ docker.username }}/.ssh/authorized_keys && \
+  chown -R {{ docker.username }}:{{ docker.username }} /home/cdn/.ssh && \
+  chmod 700 /home/{{ docker.username }}/.ssh && \
+  chmod 600 /home/{{ docker.username }}/.ssh/authorized_keys && \
+  rm /tmp/{{ ssh.private_key_name }}.pub
+
+RUN apt-get install -y sudo && \
+  echo "{{ docker.username }} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+VOLUME [ "/run", "/run/lock", "/tmp" ]
+
+CMD [ "/lib/systemd/systemd", "log-level=info", "unit=sysinit.target" ]

@@ -1,0 +1,27 @@
+# Distribution settins for docker install
+os:
+  distribution: debian
+  version: bullseye
+
+# Ansible user settings
+ansible_user: cdn
+ansible_connection: ssh
+ansible_ssh_private_key_file: "{{ ssh.private_key_location }}{{ ssh.private_key_name }}"
+
+# Location for project's data (Dockerfile, ssh key)
+project:
+  folder: "~/cdn-project"
+
+# Docker setting for docker "VMs"
+docker:
+  user: cdn
+  password: cdn
+
+  image_name: cdn-debian-bullseye
+
+  network:
+    name: cdn-network
+    driver: ipvlan
+    subnet: "192.168.1.0/24"
+    gateway: "192.168.1.1"
+    interface: "enp0s25"
