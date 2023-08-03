@@ -1,0 +1,65 @@
+---
+- name: Create Docker Containers inside defined network
+  hosts: cdn_master
+  tasks:
+    - name: Create a network with custom IPAM config and network driver
+      community.docker.docker_network:
+        name: "{{ docker.network.name }}"
+        driver: "{{ docker.network.driver }}"
+        driver_options:
+          parent: "{{ docker.network.interface }}"
+        ipam_config:
+          - subnet: "{{ docker.network.subnet }}"
+            gateway: "{{ docker.network.gateway }}"
+
+    - name: Build image with Debian OS
+      community.docker.docker_image:
+        build:
+          path: "~/cdn-project/"
+        name: "{{ docker.image_name }}"
+        source: build
+
+    - name: Start containers
+      community.docker.docker_container:
+        name: "{{ item }}"
+        image: "{{ docker.image_name }}"
+        cgroup_parent: docker.slice
+        cgroupns_mode: private
+        capabilities:
+          - SYS_ADMIN
+        interactive: true
+        privileged: true
+        networks:
+          - name: "{{ docker.network.name }}"
+            ipv4_address: "{{ hostvars[item].ansible_host }}"
+        mounts:
+          - type: tmpfs
+            target: /tmp
+          - type: tmpfs
+            target: /run
+          - type: tmpfs
+            target: /run/lock
+      loop: "{{ groups.cdn_webservers }}"
+
+  post_tasks:
+    - name: Update localhost ssh config
+      block:
+        - name: Get remote host key from nodes
+          ansible.builtin.shell:
+            cmd: ssh-keyscan {{ hostvars[item].ansible_host }}
+          register: ssh_known_host_results
+          ignore_errors: yes
+          loop: "{{ groups.cdn_webservers }}"
+
+        - name: Debug
+          debug:
+            var: ssh_known_host_results
+
+        - name: Add remote host key to known_hosts
+          ansible.builtin.known_hosts:
+            name: "{{ hostvars[item.item].ansible_host }}"
+            path: ~/.ssh/known_hosts
+            key: "{{ item.stdout }}"
+            state: present
+          loop: "{{ ssh_known_host_results.results }}"
+      delegate_to: localhost

@@ -1,0 +1,20 @@
+---
+- name: Set up web_server_node to browse static files on local disk
+  hosts: web_server_node
+  become: true
+  tasks:
+    - name: Add nginx configuration on {{ ansible_host }}
+      ansible.builtin.template:
+        src: "./templates/nginx/nginx.static.conf.j2"
+        dest: "/etc/nginx/nginx.conf"
+        mode: 0644
+      notify: Restart nginx
+
+    - name: Create static folder for nginx
+      ansible.builtin.file:
+        path: "/home/cdn/files"
+        state: directory
+        mode: "0755"
+
+  handlers:
+    - import_tasks: handlers/nginx.yaml

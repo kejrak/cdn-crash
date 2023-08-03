@@ -1,0 +1,20 @@
+---
+- name: Set up web_proxy_node to serve as a reverse proxy for web_server_node
+  hosts: web_proxy_node
+  become: true
+  tasks:
+    - name: Add nginx configuration on {{ ansible_host }}
+      ansible.builtin.template:
+        src: "./templates/nginx/nginx.proxy.conf.j2"
+        dest: "/etc/nginx/nginx.conf"
+        mode: 0644
+      notify: Restart nginx
+
+    - name: Create cache folder folder for nginx
+      ansible.builtin.file:
+        path: "/var/nginx/cache"
+        state: directory
+        mode: "0755"
+
+  handlers:
+    - import_tasks: handlers/nginx.yaml
