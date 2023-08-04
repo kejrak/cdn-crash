@@ -1,0 +1,46 @@
+- name: Generate ssh key and config on localhost
+  block:
+    - name: Generate ssh key on localhost for master node
+      community.crypto.openssh_keypair:
+        path: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+
+    - name: Get remote host key from nodes
+      ansible.builtin.shell:
+        cmd: ssh-keyscan {{ ansible_host }}
+      register: ssh_known_host_results
+      ignore_errors: yes
+
+    - name: Debug
+      debug:
+        var: ssh_known_host_results
+
+    - name: Add remote host key to known_hosts
+      ansible.builtin.known_hosts:
+        name: "{{ ansible_host }}"
+        path: ~/.ssh/known_hosts
+        key: "{{ ssh_known_host_results.stdout }}"
+        state: present
+
+    - name: Create cache folder folder for nginx
+      ansible.builtin.file:
+        path: "~/.ssh/{{ ssh.private_key_name}}.d"
+        state: directory
+        mode: "0755"
+      register: ssh_project_file
+
+    - name: Create a ssh config file
+      ansible.builtin.template:
+        src: "ssh.conf.j2"
+        dest: "{{ ssh_project_file.path }}/{{ inventory_hostname }}"
+        mode: "0644"
+
+    - name: Create a include line in ssh config
+      ansible.builtin.lineinfile:
+        path: "~/.ssh/config"
+        insertbefore: BOF
+        line: "Include {{ ssh_project_file.path }}/*"
+  delegate_to: localhost

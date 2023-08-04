@@ -39,9 +39,8 @@
             target: /run
           - type: tmpfs
             target: /run/lock
-      loop: "{{ groups.cdn_webservers }}"
+      loop: "{{ groups.cdn_monitoring }}"
 
-  post_tasks:
     - name: Update localhost ssh config
       block:
         - name: Get remote host key from nodes
@@ -49,7 +48,7 @@
             cmd: ssh-keyscan {{ hostvars[item].ansible_host }}
           register: ssh_known_host_results
           ignore_errors: yes
-          loop: "{{ groups.cdn_webservers }}"
+          loop: "{{ groups.cdn_monitoring }}"
 
         - name: Debug
           debug:

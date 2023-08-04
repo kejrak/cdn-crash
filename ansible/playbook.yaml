@@ -1,0 +1,11 @@
+---
+- name: Install ssh
+  hosts: master_node
+  tasks:
+    - name: Set up ssh connection betwen control node and master
+      import_role:
+        name: cdn_ssh
+
+    - name: Set up and install docker engine
+      import_role:
+        name: cdn_docker

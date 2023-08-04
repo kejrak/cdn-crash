@@ -1,8 +1,3 @@
----
-# Playbook to initilized ssh conection with Ansible master node which runs
-# docker containers with services. This Playbook requires "--ask-pass" for init connection without
-# ssh key. This will be removed and changed in final version.
-
 - name: Generate ssh key and config for master node
   hosts: cdn_master
   tasks:

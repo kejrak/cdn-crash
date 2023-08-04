@@ -1,8 +1,4 @@
 all:
-  vars:
-    ssh:
-      private_key_location: "~/.ssh/"
-      private_key_name: "cdn"
   children:
     cdn_master:
       hosts:
@@ -16,5 +12,11 @@ all:
           ansible_host: 192.168.1.20
     cdn_monitoring:
       hosts:
-        monitoring_node:
+        prometheus_node:
           ansible_host: 192.168.1.30
+        grafana_node:
+          ansible_host: 192.168.1.40
+    cdn_containers:
+      children:
+        cdn_webservers:
+        cdn_monitoring:

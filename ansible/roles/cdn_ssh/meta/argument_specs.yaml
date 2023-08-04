@@ -1,0 +1,15 @@
+argument_specs:
+  main:
+    short_description: Argument specs for cdn ssh setup
+    options:
+      ssh:
+        type: dict
+        required: true
+        description: "ssh key name and location"
+        options:
+          private_key_location:
+            type: str
+            default: "~/.ssh"
+          private_key_name:
+            type: str
+            default: "cdn"

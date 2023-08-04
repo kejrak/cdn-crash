@@ -1,0 +1,64 @@
+argument_specs:
+  main:
+    short_description: Argument specs for cdn docker setup
+    options:
+      ssh:
+        type: dict
+        required: true
+        description: "ssh key name and location"
+        options:
+          private_key_location:
+            type: str
+            default: "~/.ssh"
+          private_key_name:
+            type: str
+            default: "cdn"
+      cdn_docker_os:
+        type: dict
+        default:
+          distribution: "debian"
+          version: "bullseye"
+        options:
+          distribution:
+            type: str
+            default: "debian"
+          version:
+            type: str
+            default: "bullseye"
+
+      cdn_docker_project:
+        type: dict
+        default:
+          folder: "~/cdn-project"
+        options:
+          folder:
+            type: str
+            default: "~/cdn-project"
+
+      cdn_docker_settings:
+        type: dict
+        options:
+          user:
+            type: str
+            default: "cdn"
+          password:
+            type: str
+            default: "cdn"
+          image:
+            type: str
+            default: "cdn-debian-bullseye"
+          net_name:
+            type: str
+            default: "cdn-network"
+          net_driver:
+            type: str
+            default: "ipvlan"
+          net_subnet:
+            type: str
+            required: true
+          net_gateway:
+            type: str
+            required: true
+          net_interface:
+            type: str
+            required: true

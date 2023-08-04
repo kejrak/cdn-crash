@@ -1,0 +1,9 @@
+---
+- name: Set up SSH connection betwen control node and master
+  tags: cdn_ssh_connection
+  block:
+    - name: Import task to generate ssh key
+      ansible.builtin.import_tasks: generate_ssh_key.yaml
+
+    - name: Import task to authorized master
+      ansible.builtin.import_tasks: authorized_key.yaml

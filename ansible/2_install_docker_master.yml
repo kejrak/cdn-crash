@@ -1,4 +1,3 @@
-# Playbook that will install docker engine on Debian like unix distributions.
 ---
 - name: Install Docker Engine
   hosts: cdn_master

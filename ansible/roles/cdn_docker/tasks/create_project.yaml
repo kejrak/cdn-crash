@@ -1,0 +1,17 @@
+- name: Create project folder for config
+  ansible.builtin.file:
+    path: "{{ cdn_docker_project.folder }}"
+    state: directory
+    mode: "0755"
+
+- name: Add dockerfile to build image
+  ansible.builtin.template:
+    src: "image.conf.j2"
+    dest: "{{ cdn_docker_project.folder }}/Dockerfile"
+    mode: "0644"
+
+- name: Copy public key to cdn_master_node for Dockerfile
+  ansible.builtin.template:
+    src: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}.pub"
+    dest: "{{ cdn_docker_project.folder }}/{{ ssh.private_key_name }}.pub"
+    mode: "0644"
