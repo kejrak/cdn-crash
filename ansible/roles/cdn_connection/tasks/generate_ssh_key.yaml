@@ -2,7 +2,7 @@
   block:
     - name: Generate ssh key on localhost for master node
       community.crypto.openssh_keypair:
-        path: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
+        path: "{{ cdn_connection_ssh.private_key_location }}/{{ cdn_connection_ssh.private_key_name }}"
         type: rsa
         size: 4096
         state: present
@@ -25,9 +25,9 @@
         key: "{{ ssh_known_host_results.stdout }}"
         state: present
 
-    - name: Create cache folder folder for nginx
+    - name: Create project folder for inventory configs
       ansible.builtin.file:
-        path: "~/.ssh/{{ ssh.private_key_name}}.d"
+        path: "~/.ssh/{{ cdn_connection_ssh.private_key_name}}.d"
         state: directory
         mode: "0755"
       register: ssh_project_file

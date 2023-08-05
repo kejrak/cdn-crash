@@ -29,14 +29,14 @@ RUN mkdir /var/run/sshd
 RUN useradd -m -d /home/{{ cdn_docker_settings.user }} -s /bin/bash {{ cdn_docker_settings.user }} && \
   echo "{{ cdn_docker_settings.user }}:{{ cdn_docker_settings.password }}" | chpasswd
 
-COPY {{ ssh.private_key_name }}.pub /tmp/{{ ssh.private_key_name }}.pub 
+COPY {{ cdn_docker_ssh.private_key_name }}.pub /tmp/{{ cdn_docker_ssh.private_key_name }}.pub 
 
 RUN mkdir -p /home/{{ cdn_docker_settings.user }}/.ssh && \
-  cat /tmp/{{ ssh.private_key_name }}.pub >> /home/{{ cdn_docker_settings.user }}/.ssh/authorized_keys && \
+  cat /tmp/{{ cdn_docker_ssh.private_key_name }}.pub >> /home/{{ cdn_docker_settings.user }}/.ssh/authorized_keys && \
   chown -R {{ cdn_docker_settings.user }}:{{ cdn_docker_settings.user }} /home/{{ cdn_docker_settings.user }}/.ssh && \
   chmod 700 /home/{{ cdn_docker_settings.user }}/.ssh && \
   chmod 600 /home/{{ cdn_docker_settings.user }}/.ssh/authorized_keys && \
-  rm /tmp/{{ ssh.private_key_name }}.pub
+  rm /tmp/{{ cdn_docker_ssh.private_key_name }}.pub
 
 RUN apt-get install -y sudo && \
   echo "{{ cdn_docker_settings.user }} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers

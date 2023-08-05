@@ -1,0 +1,11 @@
+argument_specs:
+  main:
+    short_description: Argument specs for cdn ssh role
+    options:
+      cdn_connection_ssh:
+        type: "dict"
+        description:
+          - "Location and name of generated ssh key for connection"
+        default:
+          private_key_location: "~/.ssh"
+          private_key_name: "cdn"

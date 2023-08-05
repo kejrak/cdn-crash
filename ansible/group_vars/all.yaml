@@ -1,9 +1,25 @@
-# Ansible user settings
-
+# Ansible global settings #
 ssh:
   private_key_location: "~/.ssh"
   private_key_name: "cdn"
 
-ansible_user: "cdn"
+# Ansible master node settings #
+ansible_user: "thomas"
 ansible_connection: ssh
 ansible_ssh_private_key_file: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
+
+## cdn_connection role variables overrides ##
+cdn_connection_ssh: "{{ ssh }}"
+
+## cdn_docker role variables overrides ##
+cdn_docker_ssh: "{{ ssh }}"
+
+cdn_docker_settings:
+  user: "{{ ansible_user }}"
+  password: "admin"
+  image: "cdn-debian-bullseye"
+  net_name: "cdn-network"
+  net_driver: "ipvlan"
+  net_subnet: "192.168.1.0/24"
+  net_gateway: "192.168.1.1"
+  net_interface: "enp0s25"

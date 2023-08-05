@@ -2,7 +2,7 @@
 - name: Install ssh
   hosts: master_node
   tasks:
-    - name: Set up ssh connection betwen control node and master
+    - name: Setup ssh connection betwen control node and master node
       import_role:
         name: cdn_ssh
 

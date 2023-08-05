@@ -1,7 +1,7 @@
 ---
-ssh:
-  private_key_location: "~/.ssh"
-  private_key_name: "cdn"
+cdn_docker_ssh:
+  private_key_location: ""
+  private_key_name: ""
 
 cdn_docker_hosts:
   group: "cdn_containers"
@@ -19,6 +19,6 @@ cdn_docker_settings:
   image: "cdn-debian-bullseye"
   net_name: "cdn-network"
   net_driver: "ipvlan"
-  net_subnet: "192.168.1.0/24"
-  net_gateway: "192.168.1.1"
-  net_interface: "enp0s25"
+  net_subnet: ""
+  net_gateway: ""
+  net_interface: ""

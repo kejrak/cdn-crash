@@ -1,4 +1,4 @@
 ---
-ssh:
+cdn_connection_ssh:
   private_key_location: "~/.ssh"
   private_key_name: "cdn"

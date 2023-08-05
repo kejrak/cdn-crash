@@ -1,18 +1,18 @@
 argument_specs:
   main:
-    short_description: Argument specs for cdn docker setup
+    short_description: Argument specs for cdn docker role
     options:
-      ssh:
+     cdn_docker_ssh:
         type: dict
         required: true
         description: "ssh key name and location"
         options:
           private_key_location:
             type: str
-            default: "~/.ssh"
+            required: true
           private_key_name:
             type: str
-            default: "cdn"
+            required: true
       cdn_docker_os:
         type: dict
         default:
@@ -43,7 +43,7 @@ argument_specs:
             default: "cdn"
           password:
             type: str
-            default: "cdn"
+            default: "admin"
           image:
             type: str
             default: "cdn-debian-bullseye"

@@ -2,6 +2,6 @@ Host {{ inventory_hostname }}
   User {{ ansible_user }}
   Hostname {{ ansible_host }}
   PreferredAuthentications publickey
-  IdentityFile {{ ssh.private_key_location }}/{{ ssh.private_key_name }} 
+  IdentityFile {{ cdn_connection_ssh.private_key_location }}/{{ cdn_connection_ssh.private_key_name }} 
   IdentitiesOnly yes
   Port 22

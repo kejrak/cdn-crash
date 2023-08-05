@@ -1,5 +1,0 @@
-- name: Set authorized key taken from file
-  ansible.posix.authorized_key:
-    user: "{{ ansible_user }}"
-    state: present
-    key: "{{ lookup('file', '{{ ssh.private_key_location }}/{{ ssh.private_key_name }}.pub') }}"
