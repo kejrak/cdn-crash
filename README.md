@@ -2,7 +2,8 @@
 
 ## Inventory
 
-Create or edit **inventory** file in inventory/inventory.yaml base on you network specification and available ip addresses.
+Create or edit **inventory** file in inventory/inventory.yaml base on your network specification.  
+**Docker containers** will run as another VMs on your local network derivated form your **master node** interface.
 
 Inventory in **.ini** format.
 ```
