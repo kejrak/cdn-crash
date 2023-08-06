@@ -16,7 +16,7 @@ All variables which can be overridden are stored in defaults/main.yaml file as w
 
 ### Overrides
 
-You can **override** the default value of **cdn_connection_ssh** in inventory file stored in groups_vars/all.yal
+You can **override** the default value of **cdn_connection_ssh** in inventory file stored in group_vars/all.yal
 
 ```
 ssh:
@@ -43,7 +43,7 @@ All variables which can be overridden are stored in defaults/main.yaml file as w
 
 ### Overrides
 
-You can **override** the default value of **cdn_connection_ssh** in inventory file stored in groups_vars/all.yal
+You can **override** the default value of **cdn_connection_ssh** in inventory file stored in groups_vars/all.yaml
 
 ```
 ssh:
@@ -72,8 +72,8 @@ Install and configure **docker engine** on master node based on provided unix di
 
 ### Overrides
 
-You can **override** the default values in inventory file stored in groups_vars/all.yal
-Its **required** to **overrride** the **cdn_docekr_network_settings**.
+You can **override** the default values in inventory file stored in group_vars/all.yaml  
+It is **required** to **overrride** the **cdn_docekr_network_settings**.
 
 Like this **example**:
 
@@ -96,4 +96,22 @@ conda activate venv/
 With local pip package manager
 ```
 pip3 install -r requirements.txt
+```
+
+## Configure the inventory.yaml
+
+In inventory/inventory.yaml, add yours free addresses for hosts.
+It's mandatory to use the same addresses in your **cnd_docker_network_settings** CIDR range (**subnet** and **gateway**).
+
+## Run the playbook.yaml
+
+For the first time, if you haven't configure the ssh connection between you control and master node,
+use `--ask-pass` argument for **SSH password**.
+```
+ansible-playbook playbook.yaml -K --ask-pass
+```
+
+If you configured the ssh conection and overired the **roles** vars in groups_vars, just use **-K** for *Privilege Escalation*.
+```
+ansible-playbook playbook.yaml -K
 ```
