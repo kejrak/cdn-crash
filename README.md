@@ -1,5 +1,54 @@
 # CDN - CRASH COURSE WITH ANSIBLE
 
+## Inventory
+
+Create or edit **inventory** file in inventory/inventory.yaml base on you network specification and available ip addresses.
+
+Inventory in **.ini** format.
+```
+[cdn_master]
+master_node ansible_host=192.168.1.46
+
+[cdn_webservers]
+web_server_node ansible_host=192.168.1.10
+web_proxy_node ansible_host=192.168.1.20
+
+[cdn_monitoring]
+prometheus_node ansible_host=192.168.1.30
+grafana_node ansible_host=192.168.1.40
+
+[cdn_containers:children]
+cdn_webservers
+cdn_monitoring
+```
+
+Inventory in **.yaml** format.
+```
+all:
+  children:
+    cdn_master:
+      hosts:
+        master_node:
+          ansible_host: 192.168.1.46
+    cdn_webservers:
+      hosts:
+        web_server_node:
+          ansible_host: 192.168.1.10
+        web_proxy_node:
+          ansible_host: 192.168.1.20
+    cdn_monitoring:
+      hosts:
+        prometheus_node:
+          ansible_host: 192.168.1.30
+        grafana_node:
+          ansible_host: 192.168.1.40
+    cdn_containers:
+      children:
+        cdn_webservers:
+        cdn_monitoring:
+
+```
+
 ## Ansible role: cdn_connection
 
 ### Description
@@ -59,6 +108,9 @@ cdn_connection_ssh: "{{ ssh }}"
 
 Installs and configures **docker engine** on master node based on provided unix distribution, which will run docker containers as VMs with **systemd** installed. The default setting creates multiple docker containers with **ipvlan** network driver which are included in *cdn_containers* group. It also notifies the **control node (~localhost)** about docker containers and adds them to **known hosts**.
 
+### Variables
+All variables which can be overridden are stored in defaults/main.yaml file as well as in table below.
+
 | Name                          | Default Value    | Description                                                                                              |
 | ----------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------- |
 | `cdn_docker_ssh`              | {}               | Location and name for generating SSH key for connection (**private_key_location**, **private_key_name**) |
@@ -111,7 +163,7 @@ use `--ask-pass` argument for **SSH password**.
 ansible-playbook playbook.yaml -K --ask-pass
 ```
 
-If you configured the ssh conection and overired the **roles** vars in groups_vars, just use **-K** for *Privilege Escalation*.
+If you configured the ssh conection and overrired the **roles** vars in **inventory files**, use **-K** for *privilege escalation*.
 ```
 ansible-playbook playbook.yaml -K
 ```
