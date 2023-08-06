@@ -2,63 +2,52 @@ argument_specs:
   main:
     short_description: Argument specs for cdn docker role
     options:
-     cdn_docker_ssh:
-        type: dict
-        required: true
-        description: "ssh key name and location"
-        options:
-          private_key_location:
-            type: str
-            required: true
-          private_key_name:
-            type: str
-            required: true
+      cdn_docker_ssh:
+        type: "dict"
+        description:
+          - "Location and name of ssh key for docker image"
+        default:
+          private_key_location: "~/.ssh"
+          private_key_name: "cdn"
+      
+       cdn_docker_project:
+        type: str
+        default: "cdn_containers"
+
+      cdn_docker_project:
+        type: str
+        default: "~/cdn-project"
+
       cdn_docker_os:
         type: dict
         default:
           distribution: "debian"
           version: "bullseye"
-        options:
-          distribution:
-            type: str
-            default: "debian"
-          version:
-            type: str
-            default: "bullseye"
-
-      cdn_docker_project:
-        type: dict
-        default:
-          folder: "~/cdn-project"
-        options:
-          folder:
-            type: str
-            default: "~/cdn-project"
 
       cdn_docker_settings:
         type: dict
+        default:
+          user: "cdn"
+          password: "admin"
+          image: "cdn-debian-bullseye"
+
+      cdn_docker_network_name:
+        type: str
+        default: "cdn-netwok"
+
+      cdn_docker_network_driver:
+        type: str
+        default: "ipvlan"
+
+      cdn_docker_network_settings:
+        type: dict
         options:
-          user:
-            type: str
-            default: "cdn"
-          password:
-            type: str
-            default: "admin"
-          image:
-            type: str
-            default: "cdn-debian-bullseye"
-          net_name:
-            type: str
-            default: "cdn-network"
-          net_driver:
-            type: str
-            default: "ipvlan"
-          net_subnet:
+          subnet:
             type: str
             required: true
-          net_gateway:
+          gateway:
             type: str
             required: true
-          net_interface:
+          interface:
             type: str
             required: true

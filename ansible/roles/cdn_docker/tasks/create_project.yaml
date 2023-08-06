@@ -7,7 +7,7 @@
 - name: Add dockerfile to build image
   ansible.builtin.template:
     src: "image.conf.j2"
-    dest: "{{ cdn_docker_project.folder }}/Dockerfile"
+    dest: "{{ cdn_docker_project }}/Dockerfile"
     mode: "0644"
 
 - name: Copy public key to cdn_master_node for Dockerfile

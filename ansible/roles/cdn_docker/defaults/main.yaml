@@ -1,0 +1,24 @@
+---
+cdn_docker_ssh:
+  private_key_location: "~/.ssh"
+  private_key_name: "cdn"
+
+cdn_docker_hosts: "cdn_containers"
+
+cdn_docker_project: "~/cdn-project"
+
+cdn_docker_os:
+  distribution: "debian"
+  version: "bullseye"
+
+cdn_docker_settings:
+  user: "cdn"
+  password: "admin"
+  image: "cdn-debian-bullseye"
+
+cdn_docker_network_name: "cdn-network"
+cdn_docker_network_driver: "ipvlan"
+cdn_docker_network_settings:
+  subnet: ""
+  gateway: ""
+  interface: ""

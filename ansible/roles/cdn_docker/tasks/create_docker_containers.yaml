@@ -35,4 +35,4 @@
         target: /run
       - type: tmpfs
         target: /run/lock
-  loop: "{{ groups[cdn_docker_hosts.group] }}"
+  loop: "{{ groups[cdn_docker_hosts] }}"
