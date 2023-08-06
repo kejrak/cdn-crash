@@ -46,9 +46,21 @@ all:
     cdn_containers:
       children:
         cdn_webservers:
-        cdn_monitoring:
-
+        cdn_monitoring
 ```
+
+Inventory file in group_vars/all.yaml contains ansible specific variables for connection for all hosts in inventory file.  
+These variables **shall be overriden** base on your specific needs.
+```
+ssh:
+  private_key_location: "~/.ssh"
+  private_key_name: "cdn"
+
+ansible_user: "cdn"
+ansible_connection: ssh
+ansible_ssh_private_key_file: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
+```
+
 
 ## Ansible role: cdn_connection
 
@@ -66,7 +78,7 @@ All variables which can be overridden are stored in defaults/main.yaml file as w
 
 ### Overrides
 
-You can **override** the default value of **cdn_connection_ssh** in inventory file stored in group_vars/all.yal
+You can **override** the default value of **cdn_connection_ssh** in inventory file stored in group_vars/all.yaml
 
 ```
 ssh:

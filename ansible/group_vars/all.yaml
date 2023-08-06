@@ -4,7 +4,7 @@ ssh:
   private_key_name: "cdn"
 
 # Ansible master node settings #
-ansible_user: "thomas"
+ansible_user: "cdn"
 ansible_connection: ssh
 ansible_ssh_private_key_file: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
 
