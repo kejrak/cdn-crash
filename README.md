@@ -31,15 +31,15 @@ cdn_connection_ssh: "{{ ssh }}"
 
 ### Description
 
-Setup connection between **control node (~localhost)** and **master node**, which will run docker containers. Role generates ssh key, creates config file and set authorized key on **master node**.
+Setups connection between **control node (~localhost)** and **master node**, which will run docker containers. Role generates ssh key, creates config file and set authorized key on **master node**.
 
 ### Variables
 
 All variables which can be overridden are stored in defaults/main.yaml file as well as in table below.
 
-| Name                 | Default Value | Description                                             |
-| -------------------- | ------------- | ------------------------------------------------------- |
-| `cdn_connection_ssh` | {}            | Location and name for generating SSH key for connection |
+| Name                 | Default Value | Description                                                                                              |
+| -------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
+| `cdn_connection_ssh` | {}            | Location and name for generating SSH key for connection (**private_key_location**, **private_key_name**) |
 
 ### Overrides
 
@@ -57,7 +57,7 @@ cdn_connection_ssh: "{{ ssh }}"
 
 ### Description
 
-Install and configure **docker engine** on master node based on provided unix distribution, which will run docker containers as VMs with systemd installed. The default settings creates multiple docker containes with **ipvlan** network driver included in *cdn_containers* group. It also notify the host about created dokcker containers, so it can manage ssh connection from **control node**.
+Installs and configures **docker engine** on master node based on provided unix distribution, which will run docker containers as VMs with **systemd** installed. The default setting creates multiple docker containers with **ipvlan** network driver which are included in *cdn_containers* group. It also notifies the **control node (~localhost)** about docker containers and adds them to **known hosts**.
 
 | Name                          | Default Value    | Description                                                                                              |
 | ----------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------- |
