@@ -1,6 +1,6 @@
 argument_specs:
   main:
-    short_description: Argument specs for cdn ssh role
+    short_description: Argument specs for cdn connection role.
     options:
       cdn_connection_ssh:
         type: "dict"

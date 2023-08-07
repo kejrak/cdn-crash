@@ -1,17 +1,17 @@
 - name: Create a network with custom IPAM config and network driver
   community.docker.docker_network:
-    name: "{{ cdn_docker_settings.net_name }}"
-    driver: "{{ cdn_docker_settings.net_driver }}"
+    name: "{{ cdn_docker_network_name }}"
+    driver: "{{ cdn_docker_network_driver }}"
     driver_options:
-      parent: "{{ cdn_docker_settings.net_interface }}"
+      parent: "{{ cdn_docker_network_settings.interface }}"
     ipam_config:
-      - subnet: "{{ cdn_docker_settings.net_subnet }}"
-        gateway: "{{ cdn_docker_settings.net_gateway }}"
+      - subnet: "{{ cdn_docker_network_settings.subnet }}"
+        gateway: "{{ cdn_docker_network_settings.gateway }}"
 
 - name: Build image with Debian OS
   community.docker.docker_image:
     build:
-      path: "{{ cdn_docker_project.folder }}"
+      path: "{{ cdn_docker_project }}"
     name: "{{ cdn_docker_settings.image }}"
     source: build
 
@@ -26,7 +26,7 @@
     interactive: true
     privileged: true
     networks:
-      - name: "{{ cdn_docker_settings.net_name }}"
+      - name: "{{ cdn_docker_network_name }}"
         ipv4_address: "{{ hostvars[item].ansible_host }}"
     mounts:
       - type: tmpfs

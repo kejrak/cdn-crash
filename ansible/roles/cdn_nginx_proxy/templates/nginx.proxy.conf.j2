@@ -54,19 +54,19 @@ http {
 	# Virtual Host Configs
 	##
 
-  proxy_cache_path  /var/nginx/cache   keys_zone=cache:10m inactive=24h  max_size=1g;
+  proxy_cache_path  {{ cdn_nginx_proxy_cache.path }}   keys_zone=cache:10m inactive={{ cdn_nginx_proxy_cache.inactive }}  max_size={{ cdn_nginx_proxy_cache.max_size }};
  	
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
 
 	server {
- 	  listen 80; 
-    listen [::]:80; 
+ 	  listen  {{ cdn_nginx_proxy_listen }}; 
+    listen [::]:{{ cdn_nginx_proxy_listen }}; 
 
-    server_name {{ hostvars.web_proxy_node.ansible_host }};
+    server_name {{ ansible_host }};
 
     location / {
-      proxy_pass             http://{{ hostvars.web_server_node.ansible_host }}:80;
+      proxy_pass             http://{{ cdn_nginx_proxy_pass_address }}:{{ cdn_nginx_proxy_pass_port }};
       proxy_cache_bypass     $arg_should_bypass_cache;
       proxy_cache            cache;
       proxy_cache_key        $scheme://$host$uri$is_args$query_string;

@@ -1,0 +1,30 @@
+argument_specs:
+  main:
+    short_description: Argument specs for cdn nginx proxy role.
+    options:
+      cdn_nginx_proxy_listen:
+        type: "str"
+        description:
+          - "Port, that proxy server listens to."
+        default: "80"
+
+      cdn_nginx_proxy_cache:
+        type: "dict"
+        description:
+          - "Nginx reverse proxy cache settings."
+        default:
+          path: "/var/nginx/cache"
+          inactive: "24h"
+          max_size: "1g"
+
+      cdn_nginx_proxy_pass_address:
+        type: "str"
+        description:
+          - "Server address to redirect."
+        required: true
+
+      cdn_nginx_proxy_pass_port:
+        type: "str"
+        description:
+          - "Application port to redirect."
+        required: true

@@ -3,7 +3,7 @@
     cmd: ssh-keyscan {{ hostvars[item].ansible_host }}
   register: ssh_known_host_results
   ignore_errors: yes
-  loop: "{{ groups[cdn_docker_hosts.group] }}"
+  loop: "{{ groups[cdn_docker_hosts] }}"
 
 - name: Debug
   ansible.builtin.debug:

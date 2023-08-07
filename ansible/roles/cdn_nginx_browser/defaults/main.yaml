@@ -1,0 +1,3 @@
+---
+cdn_nginx_browser_listen: "80"
+cdn_nginx_browser_absolute_path: "/opt/files"

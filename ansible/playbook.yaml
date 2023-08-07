@@ -1,11 +1,27 @@
 ---
-- name: Install ssh
+- name: Manage connection with master node and create docker containers as VM
   hosts: master_node
   tasks:
     - name: Setup ssh connection betwen control node and master node
       import_role:
-        name: cdn_ssh
+        name: cdn_connection
 
     - name: Set up and install docker engine
       import_role:
         name: cdn_docker
+
+- name: Install and setup nginx server to browse local files
+  hosts: web_server_node
+  become: true
+  tasks:
+    - name: Install and setup nginx server
+      import_role:
+        name: cdn_nginx_browser
+
+- name: Install and setup nginx server as a revese proxy
+  hosts: web_proxy_node
+  become: true
+  tasks:
+    - name: Install and setup nginx server
+      import_role:
+        name: cdn_nginx_proxy

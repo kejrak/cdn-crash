@@ -2,8 +2,9 @@
 
 ## Inventory
 
-Create or edit **inventory** file in inventory/inventory.yaml base on your network specification.  
-**Docker containers** will run as another VMs on your local network derivated form your **master node** interface.
+To create or edit the **inventory** file, navigate to the path *inventory/inventory.yaml*. This file will be based on your network specifications.
+
+The Docker containers will function as additional **virtual machines** (VMs) on your local network. They will be derived from the **interface** of your master node.
 
 Inventory in **.ini** format.
 ```
@@ -49,7 +50,7 @@ all:
         cdn_monitoring
 ```
 
-Inventory file in group_vars/all.yaml contains ansible specific variables for connection for all hosts in inventory file.  
+The *group_vars/all.yaml* file contains hosts-specific variables used for connecting to all hosts listed in the inventory file.  
 These variables **shall be overriden** base on your specific needs.
 ```
 ssh:
@@ -61,35 +62,11 @@ ansible_connection: ssh
 ansible_ssh_private_key_file: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
 ```
 
-
 ## Ansible role: cdn_connection
 
-### Description
-
-Setup connection between **control node (~localhost)** and **master node**, which will run docker containers. Role generates ssh key, creates config file and set authorized key on **master node**.
-
-### Variables
-
-All variables which can be overridden are stored in defaults/main.yaml file as well as in table below.
-
-| Name                 | Default Value | Description                                             |
-| -------------------- | ------------- | ------------------------------------------------------- |
-| `cdn_connection_ssh` | {}            | Location and name for generating SSH key for connection |
-
-### Overrides
-
-You can **override** the default value of **cdn_connection_ssh** in inventory file stored in group_vars/all.yaml
-
-```
-ssh:
-  private_key_location: "~/.ssh"
-  private_key_name: "cdn"
-
-cdn_connection_ssh: "{{ ssh }}"
-```
-
-
-## Ansible role: cdn_connection
+### Tags
+-----
+`cdn_connection`
 
 ### Description
 
@@ -97,7 +74,7 @@ Setups connection between **control node (~localhost)** and **master node**, whi
 
 ### Variables
 
-All variables which can be overridden are stored in defaults/main.yaml file as well as in table below.
+All variables which can be overridden are stored in *defaults/main.yaml* file as well as in table below.
 
 | Name                 | Default Value | Description                                                                                              |
 | -------------------- | ------------- | -------------------------------------------------------------------------------------------------------- |
@@ -105,7 +82,7 @@ All variables which can be overridden are stored in defaults/main.yaml file as w
 
 ### Overrides
 
-You can **override** the default value of **cdn_connection_ssh** in inventory file stored in groups_vars/all.yaml
+You can **override** the default value of **cdn_connection_ssh** in inventory file stored in *groups_vars/all.yaml*.
 
 ```
 ssh:
@@ -117,9 +94,22 @@ cdn_connection_ssh: "{{ ssh }}"
 
 ## Ansible role: cdn_docker
 
+### Tags
+-----
+`cdn_docker`
+
 ### Description
 
-Installs and configures **docker engine** on master node based on provided unix distribution, which will run docker containers as VMs with **systemd** installed. The default setting creates multiple docker containers with **ipvlan** network driver which are included in *cdn_containers* group. It also notifies the **control node (~localhost)** about docker containers and adds them to **known hosts**.
+The role installs and configures the Docker Engine on the master node based on the provided Unix distribution. The master node will run Docker containers as VMs with systemd installed.
+
+Default Settings:
+
+- Multiple Docker containers with the **ipvlan** network driver will be created.
+- These containers are included in the **cdn_containers** group.
+- Notifications will be sent to the **control node (~localhost)** about the Docker containers.
+- The containers will be added to the known hosts.
+- 
+The role ensures that Docker Engine is set up correctly on the master node and manages the creation and configuration of Docker containers using the ipvlan network driver. Furthermore, it facilitates communication between the master node and the **control node (~localhost)** by notifying the control node about the created Docker containers and adding them to the known hosts list.
 
 ### Variables
 All variables which can be overridden are stored in defaults/main.yaml file as well as in table below.
@@ -137,10 +127,8 @@ All variables which can be overridden are stored in defaults/main.yaml file as w
 
 ### Overrides
 
-You can **override** the default values in inventory file stored in group_vars/all.yaml  
-It is **required** to **overrride** the **cdn_docekr_network_settings**.
-
-Like this **example**:
+You can **override** the default values in inventory file stored in *group_vars/all.yaml*.  
+It is **required** to **override** the **cdn_docker_network_settings** variables.
 
 ```
 cdn_docker_network_settings:
@@ -149,34 +137,89 @@ cdn_docker_network_settings:
   interface: "enp0s25"
 ```
 
+## Ansible role: cdn_nginx_browser
+
+### Tags
+-----
+`cdn_nginx_browser`
+
+### Description
+
+Installs and configure **nginx server** as a browser for static files.
+
+### Variables
+All variables which can be overridden are stored in *defaults/main.yaml* file as well as in table below.
+
+| Name                              | Default Value | Description                           |
+| --------------------------------- | ------------- | ------------------------------------- |
+| `cdn_nginx_browser_listen`        | "80"          | Port, that nginx server listents to   |
+| `cdn_nginx_browser_absolute_path` | "/opt/files"  | An absolute path for the static files |
+
+### Overrides
+
+You can **override** the default values in inventory file stored in *group_vars/all.yaml*.  
+
+## Ansible role: cdn_nginx_proxy
+
+### Tags
+-----
+`cdn_nginx_proxy`
+
+### Description
+
+Installs and configure **nginx server** as a reverse proxy with cache.
+
+### Variables
+All variables which can be overridden are stored in *defaults/main.yaml* file as well as in table below.
+
+| Name                           | Default Value | Description                                                              |
+| ------------------------------ | ------------- | ------------------------------------------------------------------------ |
+| `cdn_nginx_browser_listen`     | "80"          | Port, that nginx server listens to                                       |
+| `cdn_nginx_proxy_cache`        | {}            | Nginx reverse proxy cache settings (**path**, **inactive**, **max_size** |
+| `cdn_nginx_proxy_pass_address` | ""            | Server address to redirect                                               |
+| `cdn_nginx_proxy_pass_port`    | ""            | Application port to redirect                                             |
+
+
+### Overrides
+
+You can **override** the default values in inventory file stored in *group_vars/all.yaml*.  
+It is **required** to **override** the **cdn_nginx_proxy_pass_address** and **cdn_nginx_proxy_pass_port** variables.
+
+```
+cdn_nginx_proxy_pass_address: "192.168.1.10"
+cdn_nginx_proxy_pass_port: "80"
+```
+
 ## Local Testing 
 
-With Anacoda Virtual Environment
+With [Anacoda](https://anaconda.org/) Virtual Environment
 ```
 conda create -p venv/
 conda install --file requirements.txt -y
 conda activate venv/
 ```
 
-With local pip package manager
+With **Python 3 pip** package manager
 ```
 pip3 install -r requirements.txt
 ```
 
-## Configure the inventory.yaml
+If you have Ansible installed locally, **lucky you**.
 
-In inventory/inventory.yaml, add yours free addresses for hosts.
-It's mandatory to use the same addresses in your **cnd_docker_network_settings** CIDR range (**subnet** and **gateway**).
+## Run the Playbook!
 
-## Run the playbook.yaml
+If you haven't configured the SSH connection between your control node and master node for the first time, make a manual connection to your **master node**.
 
-For the first time, if you haven't configure the ssh connection between you control and master node,
-use `--ask-pass` argument for **SSH password**.
 ```
-ansible-playbook playbook.yaml -K --ask-pass
+ssh-keyscan <your master node address>
 ```
 
-If you configured the ssh conection and overrired the **roles** vars in **inventory files**, use **-K** for *privilege escalation*.
+After that, you can use `--ask-pass` argument for *ssh password* with `-K` for *privilege escalation*.
+```
+ansible-playbook playbook.yaml --ask-pass -K 
+```
+
+If you have configured the ssh conection and overrired the **roles** vars in **inventory file**, use `-K` for *privilege escalation*.
 ```
 ansible-playbook playbook.yaml -K
 ```

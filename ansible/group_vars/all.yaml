@@ -3,15 +3,16 @@ ssh:
   private_key_location: "~/.ssh"
   private_key_name: "cdn"
 
-# Ansible master node settings #
 ansible_user: "cdn"
 ansible_connection: ssh
 ansible_ssh_private_key_file: "{{ ssh.private_key_location }}/{{ ssh.private_key_name }}"
 
 ## cdn_connection role variables overrides ##
+#----------------------------------------#
 cdn_connection_ssh: "{{ ssh }}"
 
 ## cdn_docker role variables overrides ##
+#----------------------------------------#
 cdn_docker_ssh: "{{ ssh }}"
 
 cdn_docker_settings:
@@ -21,7 +22,25 @@ cdn_docker_settings:
 
 cdn_docker_network_name: "cdn-network"
 cdn_docker_network_driver: "ipvlan"
+
 cdn_docker_network_settings:
-  subnet: "192.168.1.0/24"
-  gateway: "192.168.1.1"
-  interface: "enp0s25"
+  subnet: ""
+  gateway: ""
+  interface: ""
+
+# cdn_docker_network_settings:
+#   subnet: "192.168.1.0/24"
+#   gateway: "192.168.1.1"
+#   interface: "enp0s25"
+
+## cnd_nginx_browser variables overrides ##
+#----------------------------------------#
+
+## cdn_nginx_proxy variables overrides ##
+#----------------------------------------#
+cdn_nginx_proxy_listen: ""
+cdn_nginx_proxy_pass_address: ""
+cdn_nginx_proxy_pass_port: ""
+# cdn_nginx_proxy_listen: "80"
+# cdn_nginx_proxy_pass_address: "192.168.1.10"
+# cdn_nginx_proxy_pass_port: "80"

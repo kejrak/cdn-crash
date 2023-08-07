@@ -1,0 +1,15 @@
+argument_specs:
+  main:
+    short_description: Argument specs for cdn nginx proxy role.
+    options:
+      cdn_nginx_browser_listen:
+        type: "str"
+        description:
+          - "Port, that browser server listens to."
+        default: "80"
+
+      cdn_nginx_browser_absolute_path:
+        type: "str"
+        description:
+          - "An absolute path for the static files."
+        default: "/opt/static"

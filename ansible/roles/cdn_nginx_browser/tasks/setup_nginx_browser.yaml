@@ -1,0 +1,22 @@
+- name: Add nginx configuration on {{ ansible_host }}
+  ansible.builtin.template:
+    src: "nginx.static.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    mode: "0644"
+  notify: Restart nginx
+
+- name: Create static folder for nginx
+  ansible.builtin.file:
+    path: "{{ cdn_nginx_browser_absolute_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    state: directory
+    mode: "0755"
+
+- name: Create test file in static folder
+  ansible.builtin.blockinfile:
+    path: "{{ cdn_nginx_browser_absolute_path }}/cdn.html"
+    block: |
+      <h1>Welcome to {{ ansible_host }}</h1>
+      <p>Last updated on {{ ansible_date_time.iso8601 }}</p>
+    create: true

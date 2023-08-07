@@ -1,0 +1,10 @@
+---
+- name: Install and configure nginx as a reveser proxy server
+  tags: cdn_nginx_proxy
+  become: true
+  block:
+    - name: Import task to install nginx server
+      ansible.builtin.import_tasks: install_nginx.yaml
+
+    - name: Import task to setup a nginx server as a reverse proxy
+      ansible.builtin.import_tasks: setup_nginx_proxy.yaml

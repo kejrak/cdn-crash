@@ -1,0 +1,10 @@
+---
+- name: Install and configure nginx as a static files browser
+  tags: cdn_nginx_browser
+  become: true
+  block:
+    - name: Import task to install nginx server
+      ansible.builtin.import_tasks: install_nginx.yaml
+
+    - name: Import task to setup a nginx server as a static files browser
+      ansible.builtin.import_tasks: setup_nginx_browser.yaml
