@@ -1,4 +1,5 @@
 # Ansible global settings #
+#----------------------------------------#
 ssh:
   private_key_location: "~/.ssh"
   private_key_name: "cdn"
@@ -22,25 +23,15 @@ cdn_docker_settings:
 
 cdn_docker_network_name: "cdn-network"
 cdn_docker_network_driver: "ipvlan"
-
-cdn_docker_network_settings:
-  subnet: ""
-  gateway: ""
-  interface: ""
-
-# cdn_docker_network_settings:
-#   subnet: "192.168.1.0/24"
-#   gateway: "192.168.1.1"
-#   interface: "enp0s25"
-
+cdn_docker_network_settings: {}
+  # subnet: "192.168.1.0/24"
+  # gateway: "192.168.1.1"
+  # interface: "enp0s25"
+  
 ## cnd_nginx_browser variables overrides ##
 #----------------------------------------#
 
 ## cdn_nginx_proxy variables overrides ##
 #----------------------------------------#
-cdn_nginx_proxy_listen: ""
-cdn_nginx_proxy_pass_address: ""
-cdn_nginx_proxy_pass_port: ""
-# cdn_nginx_proxy_listen: "80"
 # cdn_nginx_proxy_pass_address: "192.168.1.10"
 # cdn_nginx_proxy_pass_port: "80"

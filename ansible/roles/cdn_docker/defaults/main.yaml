@@ -19,6 +19,6 @@ cdn_docker_settings:
 cdn_docker_network_name: "cdn-network"
 cdn_docker_network_driver: "ipvlan"
 cdn_docker_network_settings:
-  subnet: ""
-  gateway: ""
-  interface: ""
+  subnet:
+  gateway:
+  interface:

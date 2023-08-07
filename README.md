@@ -211,7 +211,7 @@ If you have Ansible installed locally, **lucky you**.
 If you haven't configured the SSH connection between your control node and master node for the first time, make a manual connection to your **master node**.
 
 ```
-ssh-keyscan <your master node address>
+ssh-keyscan <your master node address> >> ~/.ssh/known_hosts
 ```
 
 After that, you can use `--ask-pass` argument for *ssh password* with `-K` for *privilege escalation*.

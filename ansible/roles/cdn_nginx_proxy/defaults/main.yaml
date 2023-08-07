@@ -4,7 +4,7 @@ cdn_nginx_proxy_cache:
   inactive: "24h"
   max_size: "1g"
 
-cdn_nginx_proxy_listen: ""
+cdn_nginx_proxy_listen: "80"
 
-cdn_nginx_proxy_pass_address: ""
-cdn_nginx_proxy_pass_port: ""
+cdn_nginx_proxy_pass_address:
+cdn_nginx_proxy_pass_port:

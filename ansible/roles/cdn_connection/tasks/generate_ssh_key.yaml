@@ -8,23 +8,6 @@
         state: present
         force: no
 
-    - name: Get remote host key from nodes
-      ansible.builtin.shell:
-        cmd: ssh-keyscan {{ ansible_host }}
-      register: ssh_known_host_results
-      ignore_errors: yes
-
-    - name: Debug
-      debug:
-        var: ssh_known_host_results
-
-    - name: Add remote host key to known_hosts
-      ansible.builtin.known_hosts:
-        name: "{{ ansible_host }}"
-        path: ~/.ssh/known_hosts
-        key: "{{ ssh_known_host_results.stdout }}"
-        state: present
-
     - name: Create project folder for inventory configs
       ansible.builtin.file:
         path: "~/.ssh/{{ cdn_connection_ssh.private_key_name}}.d"

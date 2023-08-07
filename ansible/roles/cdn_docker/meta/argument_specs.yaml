@@ -41,6 +41,7 @@ argument_specs:
 
       cdn_docker_network_settings:
         type: "dict"
+        required: true
         options:
           subnet:
             type: "str"
