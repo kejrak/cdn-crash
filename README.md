@@ -108,7 +108,7 @@ Default Settings:
 - These containers are included in the **cdn_containers** group.
 - Notifications will be sent to the **control node (~localhost)** about the Docker containers.
 - The containers will be added to the known hosts.
-- 
+  
 The role ensures that Docker Engine is set up correctly on the master node and manages the creation and configuration of Docker containers using the ipvlan network driver. Furthermore, it facilitates communication between the master node and the **control node (~localhost)** by notifying the control node about the created Docker containers and adding them to the known hosts list.
 
 ### Variables
