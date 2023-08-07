@@ -50,8 +50,7 @@ all:
         cdn_monitoring
 ```
 
-The *group_vars/all.yaml* file contains hosts-specific variables used for connecting to all hosts listed in the inventory file.  
-These variables **shall be overriden** base on your specific needs.
+The *group_vars/all.yaml* file contains hosts-specific variables used for connecting to all hosts listed in the inventory file. These variables **shall be overriden** base on your specific needs.
 ```
 ssh:
   private_key_location: "~/.ssh"
