@@ -16,10 +16,6 @@ cdn_connection_ssh: "{{ ssh }}"
 #----------------------------------------#
 cdn_docker_ssh: "{{ ssh }}"
 
-cdn_docker_os:
-  distribution: "ubuntu"
-  version: "focal"
-
 cdn_docker_settings:
   user: "{{ ansible_user }}"
   password: "admin"
@@ -27,14 +23,15 @@ cdn_docker_settings:
 
 cdn_docker_network_name: "cdn-network"
 cdn_docker_network_driver: "ipvlan"
-cdn_docker_network_settings:
-  subnet: "10.2.2.0/24"
-  gateway: "10.2.2.1"
-  interface: "ens160"
+cdn_docker_network_settings: {}
+  # subnet: "192.168.1.0/24"
+  # gateway: "192.168.1.1"
+  # interface: "enp0s25"
+  
 ## cnd_nginx_browser variables overrides ##
 #----------------------------------------#
 
 ## cdn_nginx_proxy variables overrides ##
 #----------------------------------------#
-cdn_nginx_proxy_pass_address: "10.2.2.164"
-cdn_nginx_proxy_pass_port: "80"
+# cdn_nginx_proxy_pass_address: "192.168.1.10"
+# cdn_nginx_proxy_pass_port: "80"
