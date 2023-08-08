@@ -2,7 +2,7 @@
 
 ## Inventory
 
-To create or edit the **inventory** file, navigate to the path *inventory/inventory.yaml*. This file will be based on your network specifications.
+To create or edit the **inventory** file, navigate to the path *inventory/inventory.yaml*. This file will be based on your network specifications. It **required** to change addresses in inventory file according to your network.
 
 The Docker containers will function as additional **virtual machines** (VMs) on your local network. They will be derived from the **interface** of your master node.
 
