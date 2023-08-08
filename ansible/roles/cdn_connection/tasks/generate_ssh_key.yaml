@@ -21,9 +21,10 @@
         dest: "{{ ssh_project_file.path }}/{{ inventory_hostname }}"
         mode: "0644"
 
-    - name: Create a include line in ssh config
+    - name: Include line in ssh config
       ansible.builtin.lineinfile:
         path: "~/.ssh/config"
         insertbefore: BOF
         line: "Include {{ ssh_project_file.path }}/*"
+        create: true
   delegate_to: localhost

@@ -1,8 +1,14 @@
 # CDN - CRASH COURSE WITH ANSIBLE
 
+## Prerequisities
+
+- **Master node** with **ssh-server** installed (Debian Bullseye)
+- An user account (**cdn** user is a default user for this playbook, it can be overrided)
+- This node will hosts all of your docker containers
+
 ## Inventory
 
-To create or edit the **inventory** file, navigate to the path *inventory/inventory.yaml*. This file will be based on your network specifications. It **required** to change addresses in inventory file according to your network.
+To create or edit the **inventory** file, navigate to the path *inventory/inventory.yaml*. This file will be based on your network specifications. It is **required** to change addresses in inventory file according to your network.
 
 The Docker containers will function as additional **virtual machines** (VMs) on your local network. They will be derived from the **interface** of your master node.
 
