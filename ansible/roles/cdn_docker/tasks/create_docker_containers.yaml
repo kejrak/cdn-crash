@@ -7,6 +7,8 @@
     ipam_config:
       - subnet: "{{ cdn_docker_network_settings.subnet }}"
         gateway: "{{ cdn_docker_network_settings.gateway }}"
+  become: true
+  become_method: su
 
 - name: Build image with Debian OS
   community.docker.docker_image:
