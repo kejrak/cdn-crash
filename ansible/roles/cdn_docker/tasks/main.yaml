@@ -12,8 +12,6 @@
 
     - name: Import task to create docker containers on master
       ansible.builtin.import_tasks: create_docker_containers.yaml
-      become: true
-      become_method: su
 
 - name: Import task to update known hosts on control node
   ansible.builtin.import_tasks: update_known_hosts.yaml
