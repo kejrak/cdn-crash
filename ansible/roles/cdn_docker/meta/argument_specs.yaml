@@ -34,21 +34,3 @@ argument_specs:
       cdn_docker_network_name:
         type: "str"
         default: "cdn-netwok"
-
-      cdn_docker_network_driver:
-        type: "str"
-        default: "ipvlan"
-
-      cdn_docker_network_settings:
-        type: "dict"
-        required: true
-        options:
-          subnet:
-            type: "str"
-            required: true
-          gateway:
-            type: "str"
-            required: true
-          interface:
-            type: "str"
-            required: true

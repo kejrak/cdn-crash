@@ -69,6 +69,7 @@ http {
 
     location / {
       proxy_pass             http://{{ cdn_nginx_proxy_pass_address }}:{{ cdn_nginx_proxy_pass_port }};
+      proxy_set_header       Host  {{ ansible_host }};
       proxy_cache_bypass     $arg_should_bypass_cache;
       proxy_cache            cache;
       proxy_cache_key        $scheme://$host$uri$is_args$query_string;

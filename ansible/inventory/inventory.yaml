@@ -3,19 +3,23 @@ all:
     cdn_master:
       hosts:
         master_node:
-          ansible_host: 192.168.1.46
+          ansible_port: 22
     cdn_webservers:
       hosts:
         web_server_node:
-          ansible_host: 192.168.1.10
+          ansible_port: 1022
+          nginx_port: 81
         web_proxy_node:
-          ansible_host: 192.168.1.20
+          ansible_port: 1122
+          nginx_port: 82
     cdn_monitoring:
       hosts:
         prometheus_node:
-          ansible_host: 192.168.1.30
+          ansible_port: 1123
+          nginx_port: 83
         grafana_node:
-          ansible_host: 192.168.1.40
+          ansible_port: 1124
+          nginx_port: 84
     cdn_containers:
       children:
         cdn_webservers:

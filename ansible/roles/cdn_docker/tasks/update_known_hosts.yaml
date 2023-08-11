@@ -1,6 +1,6 @@
 - name: Get remote host key from nodes
   ansible.builtin.shell:
-    cmd: ssh-keyscan {{ hostvars[item].ansible_host }}
+    cmd: ssh-keyscan -p {{ hostvars[item].ansible_port }} {{ hostvars[item].ansible_host }}
   register: ssh_known_host_results
   ignore_errors: yes
   loop: "{{ groups[cdn_docker_hosts] }}"
@@ -11,7 +11,7 @@
 
 - name: Add remote host key to known_hosts
   ansible.builtin.known_hosts:
-    name: "{{ hostvars[item.item].ansible_host }}"
+    name: "[{{ hostvars[item.item].ansible_host }}]:{{ hostvars[item.item].ansible_port}}"
     path: ~/.ssh/known_hosts
     key: "{{ item.stdout }}"
     state: present

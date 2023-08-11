@@ -17,8 +17,3 @@ cdn_docker_settings:
   image: "cdn-debian-bullseye"
 
 cdn_docker_network_name: "cdn-network"
-cdn_docker_network_driver: "ipvlan"
-cdn_docker_network_settings:
-  subnet:
-  gateway:
-  interface:

@@ -1,12 +1,6 @@
 - name: Create a network with custom IPAM config and network driver
   community.docker.docker_network:
     name: "{{ cdn_docker_network_name }}"
-    driver: "{{ cdn_docker_network_driver }}"
-    driver_options:
-      parent: "{{ cdn_docker_network_settings.interface }}"
-    ipam_config:
-      - subnet: "{{ cdn_docker_network_settings.subnet }}"
-        gateway: "{{ cdn_docker_network_settings.gateway }}"
   become: true
   become_method: su
 
@@ -27,9 +21,12 @@
       - SYS_ADMIN
     interactive: true
     privileged: true
+    published_ports:
+      - "{{ hostvars[item].ansible_port }}:22"
+      - "{{ hostvars[item].nginx_port }}:80"
     networks:
       - name: "{{ cdn_docker_network_name }}"
-        ipv4_address: "{{ hostvars[item].ansible_host }}"
+    publish_all_ports: true
     mounts:
       - type: tmpfs
         target: /tmp
