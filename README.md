@@ -3,7 +3,7 @@
 ## Prerequisities
 
 - **Master node** with **ssh-server** installed (Debian Bullseye)
-- An user account (**cdn** user is a default user for this playbook, it can be overriden)
+- An user account (**cdn** user is a default user for this playbook, it can be overridden)
 - This node will hosts all of your docker containers
 
 ## Inventory
