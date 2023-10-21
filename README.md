@@ -3,7 +3,7 @@
 ## Prerequisities
 
 - **Master node** with **ssh-server** installed (Debian Bullseye)
-- An user account (**cdn** user is a default user for this playbook, it can be overrided)
+- An user account (**cdn** user is a default user for this playbook, it can be overriden)
 - This node will hosts all of your docker containers
 
 ## Inventory
@@ -18,47 +18,18 @@ Inventory in **.ini** format.
 master_node ansible_port=22
 
 [cdn_webservers]
-web_server_node ansible_port=1022
-web_proxy_node ansible_port=1123
+web_server_node ansible_port=1022 nginx_port=81
+web_proxy_node ansible_port=1123 nginx_port=82
 
-[cdn_monitoring]
-prometheus_node ansible_port=1222
-grafana_node ansible_port=1322
+[cdn_prometheus]
+prometheus_node ansible_port=1222 prometheus_port=9090
+
+[cdn_grafana]
+grafana_node ansible_port=1322 grafana_port=3000
 
 [cdn_containers:children]
 cdn_webservers
 cdn_monitoring
-```
-
-Inventory in **.yaml** format.
-```
-all:
-  children:
-    cdn_master:
-      hosts:
-        master_node:
-          ansible_port: 22
-    cdn_webservers:
-      hosts:
-        web_server_node:
-          ansible_port: 1022
-          nginx_port: 81
-        web_proxy_node:
-          ansible_port: 1122
-          nginx_port: 82
-    cdn_monitoring:
-      hosts:
-        prometheus_node:
-          ansible_port: 1123
-          nginx_port: 83
-        grafana_node:
-          ansible_port: 1124
-          nginx_port: 84
-    cdn_containers:
-      children:
-        cdn_webservers:
-        cdn_monitoring:
-
 ```
 
 The *group_vars/all.yaml* file contains hosts-specific variables used for connecting to all hosts listed in the inventory file. These variables **shall be overriden** base on your specific needs. It is **required** to change the **ansible_host** which will be main host for the docker containers.
@@ -222,18 +193,8 @@ If you have Ansible installed locally, **lucky you**.
 
 ## Run the Playbook!
 
-If you haven't configured the SSH connection between your control node and master node for the first time, make a manual connection to your **master node**.
-
-```
-ssh-keyscan <your master node address> >> ~/.ssh/known_hosts
-```
-
-After that, you can use `--ask-pass` argument for *ssh password* with `-K` for *privilege escalation*.
+You can use `--ask-pass` (for the first time) argument for *ssh password* with `-K` for *privilege escalation*.
 ```
 ansible-playbook playbook.yaml --ask-pass -K 
 ```
 
-If you have configured the ssh conection and overrired the **roles** vars in **inventory file**, use `-K` for *privilege escalation*.
-```
-ansible-playbook playbook.yaml -K
-```

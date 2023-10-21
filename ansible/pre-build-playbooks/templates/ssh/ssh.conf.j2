@@ -1,7 +1,0 @@
-Host {{ hostvars[item].inventory_hostname }}
-  User {{ hostvars[item].ansible_user }}
-  Hostname {{ hostvars[item].ansible_host }}
-  PreferredAuthentications publickey
-  IdentityFile {{ ssh.private_key_location }}{{ ssh.private_key_name }} 
-  IdentitiesOnly yes
-  Port 22

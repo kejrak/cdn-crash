@@ -11,7 +11,7 @@
     name: "{{ cdn_docker_settings.image }}"
     source: build
 
-- name: Start containers
+- name: Start nginx containers 
   community.docker.docker_container:
     name: "{{ item }}"
     image: "{{ cdn_docker_settings.image }}"
@@ -34,4 +34,56 @@
         target: /run
       - type: tmpfs
         target: /run/lock
-  loop: "{{ groups[cdn_docker_hosts] }}"
+  loop: "{{ groups[cdn_webservers] }}"
+
+
+- name: Start prometheus container 
+  community.docker.docker_container:
+    name: "{{ item }}"
+    image: "{{ cdn_docker_settings.image }}"
+    cgroup_parent: docker.slice
+    cgroupns_mode: private
+    capabilities:
+      - SYS_ADMIN
+    interactive: true
+    privileged: true
+    published_ports:
+      - "{{ hostvars[item].ansible_port }}:22"
+      - "{{ hostvars[item].prometheus_port }}:9090"
+    networks:
+      - name: "{{ cdn_docker_network_name }}"
+    publish_all_ports: true
+    mounts:
+      - type: tmpfs
+        target: /tmp
+      - type: tmpfs
+        target: /run
+      - type: tmpfs
+        target: /run/lock
+  loop: "{{ groups[cdn_prometheus] }}"
+
+
+- name: Start grafana container 
+  community.docker.docker_container:
+    name: "{{ item }}"
+    image: "{{ cdn_docker_settings.image }}"
+    cgroup_parent: docker.slice
+    cgroupns_mode: private
+    capabilities:
+      - SYS_ADMIN
+    interactive: true
+    privileged: true
+    published_ports:
+      - "{{ hostvars[item].ansible_port }}:22"
+      - "{{ hostvars[item].grafana_port }}:3000"
+    networks:
+      - name: "{{ cdn_docker_network_name }}"
+    publish_all_ports: true
+    mounts:
+      - type: tmpfs
+        target: /tmp
+      - type: tmpfs
+        target: /run
+      - type: tmpfs
+        target: /run/lock
+  loop: "{{ groups[cdn_grafana] }}"
